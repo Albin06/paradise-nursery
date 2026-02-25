@@ -1,93 +1,61 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeItem, updateQuantity } from "../redux/CartSlice";
+import { Link } from "react-router-dom";
 
-function CartItem({ goBack }) {
-  const cartItems = useSelector((state) => state.cart.items);
+function CartItem() {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
 
-  // Calculate total cart amount
+  const handleIncrement = (item) => {
+    dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
+  };
+
+  const handleDecrement = (item) => {
+    if (item.quantity === 1) {
+      dispatch(removeItem(item.id));
+    } else {
+      dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
+    }
+  };
+
+  const handleDelete = (id) => {
+    dispatch(removeItem(id));
+  };
+
   const totalAmount = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-
-  const handleIncrease = (item) => {
-    dispatch(
-      updateQuantity({
-        id: item.id,
-        quantity: item.quantity + 1,
-      })
-    );
-  };
-
-  const handleDecrease = (item) => {
-    if (item.quantity === 1) {
-      // Remove item if quantity becomes 0
-      dispatch(removeItem(item.id));
-    } else {
-      dispatch(
-        updateQuantity({
-          id: item.id,
-          quantity: item.quantity - 1,
-        })
-      );
-    }
-  };
-
-  const handleRemove = (id) => {
-    dispatch(removeItem(id));
-  };
 
   return (
     <div className="cart-container">
       <h2>Shopping Cart</h2>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <h3>Your cart is empty</h3>
       ) : (
         <>
           {cartItems.map((item) => (
             <div key={item.id} className="cart-item">
-              <img
-                src={item.image}
-                alt={item.name}
-                width="100"
-              />
+              <h3>{item.name}</h3>
+              <p>Price: ${item.price}</p>
+              <p>Quantity: {item.quantity}</p>
+              <p>Total: ${item.price * item.quantity}</p>
 
-              <div>
-                <h3>{item.name}</h3>
-                <p>Unit Price: ${item.price}</p>
-                <p>Total: ${item.price * item.quantity}</p>
-
-                <div>
-                  <button onClick={() => handleIncrease(item)}>+</button>
-
-                  <span style={{ margin: "0 10px" }}>
-                    {item.quantity}
-                  </span>
-
-                  <button onClick={() => handleDecrease(item)}>-</button>
-                </div>
-
-                <button onClick={() => handleRemove(item.id)}>
-                  Delete
-                </button>
-              </div>
+              <button onClick={() => handleIncrement(item)}>+</button>
+              <button onClick={() => handleDecrement(item)}>-</button>
+              <button onClick={() => handleDelete(item.id)}>Delete</button>
             </div>
           ))}
 
           <h3>Total Cart Amount: ${totalAmount}</h3>
-
-          <button onClick={() => alert("Coming Soon!")}>
-            Checkout
-          </button>
-
-          <button onClick={goBack}>
-            Continue Shopping
-          </button>
         </>
       )}
+
+      <Link to="/plants">
+        <button>Continue Shopping</button>
+      </Link>
     </div>
   );
 }

@@ -3,25 +3,55 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.landing-page {
-  background-image: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6");
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  text-align: center;
-  padding-top: 200px;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: green;
   color: white;
 }
 
+.navbar a {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.landing-page {
+  height: 90vh;
+  background-image: url("/images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.get-started-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 .plant-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
   gap: 20px;
-  padding: 20px;
+  flex-wrap: wrap;
 }
 
 .plant-card {
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   padding: 15px;
   text-align: center;
+}
+
+.cart-container {
+  padding: 20px;
+}
+
+.cart-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
 }
